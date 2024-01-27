@@ -1,5 +1,5 @@
 /*
- * Hanoi.java textbased Tower of Hanoi game
+ * Hanoi.java, textbased Tower of Hanoi game
  * 
  * Copyright 2024 Pumpkinrat
  * 
@@ -163,7 +163,7 @@ public class Hanoi{
 
 ////////////////////////////////////////////////////////////////////
     private static void game_level(int level) {
-        N_bricks = 3 + level -1;
+        N_bricks = level;
         W_scrn = (((N_bricks*2)+1)*N_towers)+(3*(N_towers-1))+2;
         H_scrn = N_bricks+4;
         
@@ -206,7 +206,11 @@ public class Hanoi{
             
             if ( (curr_brick==-1) && (selected!=-1) ) {
                 curr_brick = towers[selected].pop();
-                log_msg = "+ picked up brick from "+Character.toString((selected+97))+".";
+                if (curr_brick==-1) {
+                    log_msg = "x no bricks here!";
+                } else {
+                    log_msg = "+ picked up brick from "+Character.toString((selected+97))+".";
+                }
             } else if ( (curr_brick!=-1) && (selected!=-1) ) {
                 ground_brick = towers[selected].peek();
                 if ( (ground_brick>curr_brick) || (ground_brick==-1) ) {
@@ -224,8 +228,8 @@ public class Hanoi{
     }
     
     private static void game() {
-        for (int level=0; (level<(64-3))&&(loop_game); level++) {
-            game_level(level+1);
+        for (int level=1; (level<=(64))&&(loop_game); level++) {
+            game_level(level);
         }
     }
     
@@ -242,23 +246,23 @@ public class Hanoi{
     }
     
     private static void version() {
-        System.out.printf("Hanoi 0.0 Tower of Hanoi game.%nCopyright (C) 2024 Pumpkinrat%nLicense GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.%nThis is free software: you are free to change and redistribute it.%nThere is NO WARRANTY, to the extent permitted by law.%n%nWritten by Pumpkinrat.");
+        System.out.printf("Hanoi 0.1 Tower of Hanoi game.%nCopyright (C) 2024 Pumpkinrat%nLicense GPLv2+: GNU GPL version 2 or later.%nThis is free software: you are free to change and redistribute it.%nThere is NO WARRANTY, to the extent permitted by law.%n%nWritten by Pumpkinrat; see,%n<github.com/pumpkinrat/towerofhanoi>");
     }
     
     private static void help() {
-        System.out.printf(" -h, --help \t\t this help Page%n -V, --version \t\t Version information%n -l, -level <number> \t play level number 1 to 64 ");
+        System.out.printf(" -h, --help \t\t show this help text%n -V, --version \t\t Version information%n -l, -level <number> \t play level number 1 to 64 ");
     }
     
     ////////////////////////////////////////////////////////////////////
     public static void main (String[] args) {
         inpt = new BufferedReader (new InputStreamReader (System.in));
         N_towers = 3;
-        N_bricks = 3;
-        buff_screen = new String[70][407];
-        scene_screen = new String[70][407];
+        buff_screen = new String[68][395];
+        scene_screen = new String[68][396];
         towers = new BrickStack[N_towers];
         if (args.length>0) {
             switch (args[0]) {
+                case "-h": help(); break; 
                 case "--help": help(); break; 
                 case "--version": version(); break; 
                 case "-V": version(); break;
@@ -276,7 +280,7 @@ public class Hanoi{
                             System.out.println("too few arguments!");
                     }
                     break;
-                default: help();
+                default: System.out.println("Argument '"+args[0]+"' is not an option!"); help();
             }
         } else {
             loop_game = true;
